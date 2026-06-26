@@ -1,175 +1,240 @@
-# Azure AI Foundry SDK Chat Application
+# Azure AI Foundry Labs
 
-This repository contains a Python-based generative AI chat application built with the Microsoft Foundry SDK as part of the Microsoft Learn exercise **"Develop an AI app with the Microsoft Foundry SDK"**.
+This repository contains the exercises completed from the Microsoft Learn **Azure AI Foundry** learning path.
 
-The project demonstrates how to connect to an Azure AI Foundry project, interact with deployed language models, and generate AI-powered responses from a console application.
+The goal of this repository is to demonstrate how to build Generative AI applications using Azure AI Foundry, the Microsoft Foundry SDK, and the Responses API, including the integration of tools such as Web Search, File Search, Code Interpreter, and custom Functions.
 
-## Overview
+---
 
-The application:
+# Labs Included
+
+## Lab 03 - Develop an AI App with the Microsoft Foundry SDK
+
+Build a Python chat application that:
 
 * Connects to an Azure AI Foundry project.
 * Authenticates using Azure credentials.
 * Uses the Microsoft Foundry SDK.
-* Sends prompts to a deployed generative AI model.
-* Displays AI-generated responses in a conversational chat interface.
+* Sends prompts to a deployed language model.
+* Supports both synchronous and asynchronous chat interactions.
 
-## Architecture
+---
 
-```text
-User
- │
- ▼
-Python Chat Application
- │
- ▼
-Microsoft Foundry SDK
- │
- ▼
-Azure AI Foundry Project
- │
- ▼
-Deployed Language Model
-```
+## Lab 04A - Create a Generative AI App that Uses Tools
 
-## Prerequisites
+Extend the application by integrating Azure AI Foundry tools.
 
-Before running the application, ensure you have:
+Implemented tools include:
 
-* An active Azure subscription.
-* An Azure AI Foundry project.
-* A deployed chat-capable model.
-* Python 3.10 or later.
-* Azure CLI installed and authenticated.
+* **Code Interpreter**
+* **Function Calling**
+* **Web Search**
+* **File Search**
+* **Responses API**
 
-## Project Structure
+These tools enable the model to execute code, search the web, retrieve information from uploaded documents, and invoke custom functions.
+
+---
+
+# Repository Structure
 
 ```text
 .
-├── src/
-│   └── chat_app.py
-├── requirements.txt
-├── .env
+├── chat-app/
+│   ├── .env
+│   ├── chat-app.py
+│   ├── chat-async.py
+│   └── requirements.txt
+│
+├── tools-app/
+│   ├── brochures/
+│   ├── .env
+│   ├── tools-app.py
+│   ├── tools-vector-creation.py
+│   └── requirements.txt
+│
 └── README.md
 ```
 
-## Installation
+---
 
-### 1. Clone the repository
+# Features
 
-```bash
-git clone https://github.com/<your-org>/<your-repo>.git
-cd <your-repo>
-```
+## Chat Application
 
-### 2. Create a virtual environment
+* Azure AI Foundry SDK
+* GPT model interaction
+* Synchronous chat
+* Asynchronous chat
+* Azure authentication using `DefaultAzureCredential`
 
-```bash
-python -m venv .venv
-```
+## Tools Application
 
-Activate it:
+* Responses API
+* Code Interpreter
+* Function Calling
+* Web Search
+* File Search
+* Vector Store creation
+* Document indexing for Retrieval-Augmented Generation (RAG)
 
-#### Windows
+---
 
-```powershell
-.venv\Scripts\activate
-```
+# Prerequisites
 
-#### Linux / macOS
+Before running the samples, ensure you have:
 
-```bash
-source .venv/bin/activate
-```
+* Azure Subscription
+* Azure AI Foundry Project
+* A deployed GPT model
+* Python 3.13+
+* Azure CLI
+* Visual Studio Code (recommended)
 
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-## Configuration
-
-Create a `.env` file:
-
-```env
-PROJECT_ENDPOINT=https://<your-foundry-project>.services.ai.azure.com/api/projects/<project-name>
-MODEL_DEPLOYMENT=<deployment-name>
-```
-
-Replace the values with those from your Azure AI Foundry project.
-
-## Authentication
-
-Login to Azure:
+Authenticate with Azure:
 
 ```bash
 az login
 ```
 
-The application uses Azure identity credentials provided by the Azure SDK.
+---
 
-## Running the Application
+# Installation
 
-Start the chat application:
+Clone the repository:
 
 ```bash
-python src/chat_app.py
+git clone https://github.com/<your-org>/<repository>.git
+
+cd <repository>
 ```
 
-Example:
+Create a virtual environment:
 
-```text
-You: What is Azure AI Foundry?
-
-Assistant: Azure AI Foundry is a platform that enables developers to build,
-deploy, and manage AI applications using a variety of foundation models and tools.
+```bash
+python -m venv .venv
 ```
 
-## Sample Code
+Activate it.
 
-```python
-from azure.identity import DefaultAzureCredential
-from azure.ai.projects import AIProjectClient
+**Windows**
 
-project = AIProjectClient(
-    endpoint=PROJECT_ENDPOINT,
-    credential=DefaultAzureCredential()
-)
-
-response = project.inference.get_chat_completions(
-    model=MODEL_DEPLOYMENT,
-    messages=[
-        {"role": "user", "content": "Explain Azure AI Foundry"}
-    ]
-)
-
-print(response.choices[0].message.content)
+```powershell
+.venv\Scripts\activate
 ```
 
-## Learning Objectives
+**Linux / macOS**
 
-This project demonstrates how to:
+```bash
+source .venv/bin/activate
+```
 
+Install dependencies for each sample:
+
+```bash
+cd chat-app
+pip install -r requirements.txt
+```
+
+or
+
+```bash
+cd tools-app
+pip install -r requirements.txt
+```
+
+---
+
+# Running the Samples
+
+## Chat Application
+
+```bash
+cd chat-app
+
+python chat-app.py
+```
+
+or
+
+```bash
+python chat-async.py
+```
+
+---
+
+## Tools Application
+
+First create the vector store used by the File Search tool:
+
+```bash
+cd tools-app
+
+python tools-vector-creation.py
+```
+
+Then run the application:
+
+```bash
+python tools-app.py
+```
+
+---
+
+# Tool Samples
+
+The following prompts can be used to test each implemented tool.
+
+| Tool                 | Sample Prompt                                   |
+| -------------------- | ----------------------------------------------- |
+| **Code Interpreter** | `The square root of 16 is 4.`                   |
+| **Function Calling** | `What time is it?`                              |
+| **Web Search**       | `Give me the current weather in New York.`      |
+| **File Search**      | `What hotels does Margie's Travel offer there?` |
+
+---
+
+# Learning Objectives
+
+By completing these labs you will learn how to:
+
+* Create Azure AI Foundry projects.
+* Deploy foundation models.
 * Use the Microsoft Foundry SDK.
-* Connect to Azure AI Foundry projects.
-* Authenticate with Azure services.
-* Send prompts to deployed AI models.
-* Build a simple conversational AI application.
+* Build AI chat applications.
+* Work with the Responses API.
+* Integrate external tools into AI workflows.
+* Create and use Vector Stores.
+* Ground model responses using enterprise documents.
+* Implement Retrieval-Augmented Generation (RAG) patterns.
 
-## Technologies Used
+---
+
+# Technologies Used
 
 * Python
 * Azure AI Foundry
 * Microsoft Foundry SDK
 * Azure Identity
-* Azure CLI
+* Azure OpenAI
+* GPT Models
+* Responses API
+* Code Interpreter
+* Function Calling
+* Web Search
+* File Search
+* Vector Stores
 
-## References
+---
 
-* Microsoft Learn - Develop an AI app with the Microsoft Foundry SDK
-* https://microsoftlearning.github.io/mslearn-ai-studio/Instructions/Exercises/03-foundry-sdk.html
+# References
 
-## Disclaimer
+* Microsoft Learn – Develop an AI App with the Microsoft Foundry SDK
+* Microsoft Learn – Create a Generative AI App that Uses Tools
+* Azure AI Foundry Documentation
 
-This repository was created for educational purposes following Microsoft Learn training content and may require updates as Azure AI Foundry and the Microsoft Foundry SDK evolve.
+---
+
+# Disclaimer
+
+This repository contains educational implementations based on Microsoft Learn labs. It is intended for learning and experimentation purposes and may require updates as Azure AI Foundry evolves.
